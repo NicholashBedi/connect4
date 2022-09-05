@@ -28,6 +28,13 @@ class Viewer():
             self.HEIGHT - (y*(2*self.DISK_RADIUS + self.px_between_disks) + self.DISK_RADIUS)),
             self.DISK_RADIUS, disk_colour, -1)
 
+    def getColourOfTeam(self, team):
+        if team == 1:
+            return "Yellow"
+        if team == -1:
+            return "Red"
+        return "Invalid input: {}".format(team)
+
     def setImage(self):
         self.image[:] = (255,0,0)
         for x in range(self.BOARD_WIDTH):
@@ -38,16 +45,8 @@ class Viewer():
         self.board = board
         self.setImage()
 
-    def displayBoard(self, board):
+    def displayBoard(self, board, pause = False):
         self.setBoard(board)
         cv.imshow("Connect4", self.image)
-        cv.waitKey(0)
-
-if __name__ == "__main__":
-    v = Viewer()
-    v.board[1,1] = 1
-    v.board[0,1] = -1
-    v.board[5,6] = -1
-    v.board[2,5] = 1
-    v.setImage()
-    v.displayBoard()
+        if pause:
+            cv.waitKey(0)

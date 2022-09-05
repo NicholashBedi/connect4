@@ -26,34 +26,44 @@ class Board:
             if self.board[i,action] == 0:
                 self.board[i,action] = team
                 return True
-        print("Shouldn't be here")
+        print("Shouldn't be here -- Take action")
         return False
 
     def check4InARow(self, debug = False):
         # Check horizontal
         for y in range(self.BOARD_HEIGHT):
-            for x in range(self.BOARD_WIDTH - 4):
+            for x in range(self.BOARD_WIDTH - 3):
                 arr = self.board[y,x:x+4]
                 if np.array_equal(arr, [1,1,1,1]) or np.array_equal(arr, [-1,-1,-1,-1]):
-                    print("Connect 4 - horizontal y = {} x = {}->{}".format(y,x,x+4))
+                    if debug:
+                        print("Connect 4 - horizontal y = {} x = {}->{}".format(y,x,x+4))
                     return arr[0]
         # Check vertical
         for x in range(self.BOARD_WIDTH):
-            for y in range(self.BOARD_HEIGHT - 4):
+            for y in range(self.BOARD_HEIGHT - 3):
                 arr = self.board[y:y+4,x]
                 if np.array_equal(arr, [1,1,1,1]) or np.array_equal(arr, [-1,-1,-1,-1]):
-                    print("Connect 4 - vertical y = {}->{} x = {}".format(y,y+4,x))
+                    if debug:
+                        print("Connect 4 - vertical y = {}->{} x = {}".format(y,y+4,x))
                     return arr[0]
-        for x in range(self.BOARD_WIDTH-4):
-            for y in range(self.BOARD_HEIGHT-4):
+        for x in range(self.BOARD_WIDTH-3):
+            for y in range(self.BOARD_HEIGHT-3):
                 arr = np.array([self.board[y+i,x+i] for i in range(4)])
                 if np.array_equal(arr, [1,1,1,1]) or np.array_equal(arr, [-1,-1,-1,-1]):
-                    print("Connect 4 - Diag up y = {}->{} x = {}->{}".format(y,y+4,x, x+4))
+                    if debug:
+                        print("Connect 4 - Diag up y = {}->{} x = {}->{}".format(y,y+4,x, x+4))
                     return arr[0]
-        for x in range(self.BOARD_WIDTH-4):
-            for y in range(self.BOARD_HEIGHT-1, 3, -1):
+        for x in range(self.BOARD_WIDTH-3):
+            for y in range(self.BOARD_HEIGHT-1, 2, -1):
                 arr = np.array([self.board[y-i,x+i] for i in range(4)])
                 if np.array_equal(arr, [1,1,1,1]) or np.array_equal(arr, [-1,-1,-1,-1]):
-                    print("Connect 4 - Diag down y = {}->{} x = {}->{}".format(y,y-4,x, x+4))
+                    if debug:
+                        print("Connect 4 - Diag down y = {}->{} x = {}->{}".format(y,y-4,x, x+4))
                     return arr[0]
         return 0
+
+    def step(self, team, action):
+        self.takeAction(team, action)
+        result = self.check4InARow()
+        done = (result != 0) or (0 not in self.board[-1,:])
+        return self.board, result, done

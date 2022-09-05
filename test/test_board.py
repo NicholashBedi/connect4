@@ -23,6 +23,26 @@ def test_takeAction():
     test(p.takeAction(-1,3), False)
     test(p.validActions(), [i for i in range(p.BOARD_WIDTH) if i != 2 and i != 3])
 
+def test_checkMore4InARow():
+    b = Board()
+    brd =   [[0., 0., 0., 0., 0., 0., 0.],
+            [0., 0., 0., 0., 0., 0., 0.],
+            [0., 0., 0., 0., 0., 0., 0.],
+            [0., 0., 0., 0., 0., 0., 0.],
+            [0., 0., 0., 0., 0., 0., 0.],
+            [0., 0., 0., 0., 0., 0., 0.]]
+    b.board = np.array(brd)
+    test(b.check4InARow(), 0)
+    brd =   [[0., 0., 0., 0., 0., 0., 0.],
+            [0., 0., 0., 0., 0., 0., 0.],
+            [0., 0., 0., 1., 0., 0., 0.],
+            [0., 0., 0., 0., 1., 0., 0.],
+            [0., 0., 0., 0., 0., 1., 0.],
+            [0., 0., 0., 0., 0., 0., 1.]]
+    b.board = np.array(brd)
+    test(b.check4InARow(), 1)
+
+
 def test_check4InARow():
     b = Board()
     test(b.check4InARow(), 0)
@@ -51,5 +71,9 @@ def test_check4InARow():
     b.board = np.array(brd)
     test(b.check4InARow(), -1)
 
+print("test_takeAction")
 test_takeAction()
+print("test_check4InARow")
 test_check4InARow()
+print("test_checkMore4InARow")
+test_checkMore4InARow()
