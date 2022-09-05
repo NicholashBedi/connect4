@@ -7,8 +7,10 @@ class Board:
         # [0,0] is bottom left, and BOARD_HEIGHT-1,BOARD_WIDTH-1 is top right
         self.board = np.zeros((self.BOARD_HEIGHT, self.BOARD_WIDTH))
         self.display = disp
+        self.current_colour = -1 # Red player starts
 
     def resetBoard(self):
+        self.current_colour = -1
         self.board = np.zeros((self.BOARD_HEIGHT, self.BOARD_WIDTH))
 
     def validActions(self):
@@ -19,12 +21,13 @@ class Board:
             return False
         return self.board[-1,action] == 0
 
-    def takeAction(self, team, action):
+    def takeAction(self, action):
         if self.board[-1,action] != 0 :
             return False
         for i in range(self.BOARD_HEIGHT):
             if self.board[i,action] == 0:
-                self.board[i,action] = team
+                self.board[i,action] = self.current_colour
+                self.current_colour *= -1
                 return True
         print("Shouldn't be here -- Take action")
         return False
@@ -62,8 +65,8 @@ class Board:
                     return arr[0]
         return 0
 
-    def step(self, team, action):
-        self.takeAction(team, action)
+    def step(self, action):
+        self.takeAction(action)
         result = self.check4InARow()
         done = (result != 0) or (0 not in self.board[-1,:])
         return self.board, result, done

@@ -45,8 +45,24 @@ class Viewer():
         self.board = board
         self.setImage()
 
-    def displayBoard(self, board, pause = False):
+    def displayBoard(self, board, pause = -1):
         self.setBoard(board)
         cv.imshow("Connect4", self.image)
-        if pause:
-            cv.waitKey(0)
+        if pause >= 0:
+            cv.waitKey(pause)
+
+    def getMousePress(self, event, x, y, flags, param):
+        if event == cv.EVENT_LBUTTONDBLCLK:
+            self.no_input = False
+            self.mouseX = x
+            print("Press recived {}".format(self.mouseX // (self.WIDTH//self.BOARD_WIDTH)))
+
+    def getHumanAction(self, board):
+        self.setBoard(board)
+        cv.imshow("Connect4", self.image)
+        cv.setMouseCallback('Connect4', self.getMousePress)
+        self.no_input = True
+        while self.no_input:
+            cv.waitKey(1)
+        action = self.mouseX // (self.WIDTH//self.BOARD_WIDTH)
+        return action

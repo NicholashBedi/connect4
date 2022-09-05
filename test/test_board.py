@@ -15,12 +15,12 @@ def test_takeAction():
     p = Board()
     test(p.validActions(), [i for i in range(p.BOARD_WIDTH)])
     for i in range(p.BOARD_HEIGHT):
-        test(p.takeAction(1,2), True)
-    test(p.takeAction(1,2), False)
+        test(p.takeAction(2), True)
+    test(p.takeAction(2), False)
     test(p.validActions(), [i for i in range(p.BOARD_WIDTH) if i != 2])
     for i in range(p.BOARD_HEIGHT):
-        test(p.takeAction(-1,3), True)
-    test(p.takeAction(-1,3), False)
+        test(p.takeAction(3), True)
+    test(p.takeAction(3), False)
     test(p.validActions(), [i for i in range(p.BOARD_WIDTH) if i != 2 and i != 3])
 
 def test_checkMore4InARow():
@@ -46,14 +46,17 @@ def test_checkMore4InARow():
 def test_check4InARow():
     b = Board()
     test(b.check4InARow(), 0)
-    test(b.takeAction(1, 0), True)
+    test(b.takeAction(0), True)
+    test(b.takeAction(0), True)
     test(b.check4InARow(), 0)
-    test(b.takeAction(1, 1), True)
+    test(b.takeAction(1), True)
+    test(b.takeAction(1), True)
     test(b.check4InARow(), 0)
-    test(b.takeAction(1, 2), True)
+    test(b.takeAction(2), True)
+    test(b.takeAction(2), True)
     test(b.check4InARow(), 0)
-    test(b.takeAction(1, 3), True)
-    test(b.check4InARow(), 1)
+    test(b.takeAction(3), True)
+    test(b.check4InARow(), -1)
     brd = [[0., 0., 0., 0., 0., 0., 0.],
                [0., 1, 0., 0., 0., 0., 0.],
                [0., 0., 1, 0., 0., 0., 0.],
